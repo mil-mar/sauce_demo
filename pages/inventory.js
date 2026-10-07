@@ -8,5 +8,7 @@ export class InventoryPage {
   constructor(page) {
     this.page = page;
     this.cartButton = page.locator(".shopping_cart_link");
+    this.inventoryList = page.locator(".inventory_list");
+    this.inventoryItems = page.locator(".inventory_item");
   }
 }
