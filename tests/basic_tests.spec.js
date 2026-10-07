@@ -4,6 +4,8 @@ import { POManager } from "../pages/PO_manager";
 require("dotenv").config();
 
 const url_sauce_demo = "https://www.saucedemo.com";
+const username = process.env.STANDARD_USERNAME;
+const password = process.env.STANDARD_PASSWORD;
 
 test("sauce_demo_landing_page", async ({ page }) => {
   const poManager = new POManager(page);
@@ -21,8 +23,6 @@ test("valid_login", async ({ page }) => {
   await page.goto(url_sauce_demo);
 
   // fill in username and password
-  const username = process.env.STANDARD_USERNAME;
-  const password = process.env.STANDARD_PASSWORD;
 
   await poManager.landingPage.usernameInput.fill(username);
   await poManager.landingPage.passwordInput.fill(password);
@@ -36,7 +36,6 @@ test("valid_login", async ({ page }) => {
 test("invalid username", async ({ page }) => {
   const poManager = new POManager(page);
   await page.goto(url_sauce_demo);
-  const password = process.env.STANDARD_PASSWORD;
 
   // fill in invalid username (with password correct for one of the accounts) and attempt to log in
   await poManager.landingPage.usernameInput.fill("incorrect");
@@ -53,7 +52,6 @@ test("invalid username", async ({ page }) => {
 test("invalid password", async ({ page }) => {
   const poManager = new POManager(page);
   await page.goto(url_sauce_demo);
-  const username = process.env.STANDARD_USERNAME;
 
   // fill in valid username with invalid password and attempt to log in
   await poManager.landingPage.usernameInput.fill(username);
@@ -69,8 +67,6 @@ test("invalid password", async ({ page }) => {
 
 test("add 1 item to cart", async ({ page }) => {
   const poManager = new POManager(page);
-  const username = process.env.STANDARD_USERNAME;
-  const password = process.env.STANDARD_PASSWORD;
 
   // go to landing page and log in
   await page.goto(url_sauce_demo);
@@ -89,8 +85,6 @@ test("add 1 item to cart", async ({ page }) => {
 
 test("complete checkout process", async ({ page }) => {
   const poManager = new POManager(page);
-  const username = process.env.STANDARD_USERNAME;
-  const password = process.env.STANDARD_PASSWORD;
 
   // go to landing page and log in
   await page.goto(url_sauce_demo);
