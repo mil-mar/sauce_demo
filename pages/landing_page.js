@@ -1,4 +1,11 @@
 // @ts-check
+require("dotenv").config();
+
+// valid username & password
+const username = process.env.STANDARD_USERNAME;
+const password = process.env.STANDARD_PASSWORD;
+
+const landingPageUrl = "https://www.saucedemo.com";
 
 export class LandingPage {
   /**
@@ -16,5 +23,11 @@ export class LandingPage {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
+  }
+
+  // logged in with valid credential on landing page
+  async loggedIn() {
+    await this.page.goto(landingPageUrl);
+    await this.login(username, password);
   }
 }

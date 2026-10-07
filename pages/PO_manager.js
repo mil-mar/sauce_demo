@@ -1,5 +1,6 @@
 // @ts-check
 import { LandingPage } from "./landing_page";
+import { TopBar } from "./top_bar";
 import { InventoryPage } from "./inventory_page";
 import { CartPage } from "./cart_page";
 import { CheckoutStep1 } from "./checkout_step1";
@@ -19,5 +20,6 @@ export class POManager {
     this.checkoutStep1 = new CheckoutStep1(this.page);
     this.checkoutStep2 = new CheckoutStep2(this.page);
     this.checkoutComplete = new CheckoutComplete(this.page);
+    this.topBar = new TopBar(this.page);
   }
 }

@@ -81,7 +81,7 @@ test("add 1 item to cart", async ({ page }) => {
   await our_item.getByRole("button", { name: "Add to cart" }).click();
 
   // verify that item was added to cart and button for the item changed to 'Remove'
-  await expect(poManager.inventoryPage.cartButton).toHaveText("1");
+  await expect(poManager.topBar.cartButton).toHaveText("1");
   await expect(our_item.getByRole("button", { name: "Remove" })).toBeVisible();
 });
 
@@ -98,7 +98,7 @@ test("complete checkout process", async ({ page }) => {
   await poManager.inventoryPage.searchProductAddToCart("Sauce Labs Backpack");
 
   // go to cart and complete checkout process
-  await poManager.inventoryPage.cartButton.click();
+  await poManager.topBar.cartButton.click();
   await poManager.cartPage.checkoutButton.click();
   await poManager.checkoutStep1.firstNameInput.fill("John");
   await poManager.checkoutStep1.lastNameInput.fill("Doe");
@@ -113,4 +113,19 @@ test("complete checkout process", async ({ page }) => {
   await expect(poManager.checkoutComplete.orderCompleteHeader).toHaveText(
     "Thank you for your order!",
   );
+});
+
+test("burger menu - click About button", async ({ page }) => {
+  const poManager = new POManager(page);
+
+  // logged in at landing page
+  await poManager.landingPage.loggedIn();
+
+  // click on burger menu from top bar and select 'About'
+  await poManager.topBar.burgerMenu.click();
+  await expect(poManager.topBar.burgerMenuItemList).toBeVisible();
+  await poManager.topBar.burgerMenuAboutButton.click();
+
+  // verify About page is opened
+  await expect(page.url()).toBe("https://saucelabs.com/");
 });
