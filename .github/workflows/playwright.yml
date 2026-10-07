@@ -3,7 +3,10 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, master]
+env:
+  STANDARD_USERNAME: ${{ secrets.STANDARD_USERNAME }}
+  STANDARD_PASSWORD: ${{ secrets.STANDARD_PASSWORD }}
 jobs:
   test:
     timeout-minutes: 60
