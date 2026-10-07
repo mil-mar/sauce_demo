@@ -27,8 +27,10 @@ test("valid_login", async ({ page }) => {
   await poManager.landingPage.usernameInput.fill(username);
   await poManager.landingPage.passwordInput.fill(password);
   await poManager.landingPage.loginButton.click();
+
+  // verify login is succcessful
   await expect(poManager.inventoryPage.inventoryList).toBeVisible();
-  await expect(poManager.inventoryPage.cartButton).toBeVisible();
+  await expect(poManager.topBar.cartButton).toBeVisible();
 });
 
 test("invalid username", async ({ page }) => {
