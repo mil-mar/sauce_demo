@@ -2,7 +2,6 @@
 
 export class CheckoutStep1 {
   /**
-   *
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {

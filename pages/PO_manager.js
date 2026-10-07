@@ -9,7 +9,6 @@ import { CheckoutComplete } from "./checkout_complete";
 
 export class POManager {
   /**
-   *
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {

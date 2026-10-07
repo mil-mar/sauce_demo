@@ -2,7 +2,6 @@
 
 export class InventoryPage {
   /**
-   *
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {

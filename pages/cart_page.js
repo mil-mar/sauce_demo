@@ -2,7 +2,6 @@
 
 export class CartPage {
   /**
-   *
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {

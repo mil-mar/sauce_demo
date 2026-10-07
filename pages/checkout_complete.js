@@ -2,7 +2,6 @@
 
 export class CheckoutComplete {
   /**
-   *
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {

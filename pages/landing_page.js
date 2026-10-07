@@ -25,7 +25,7 @@ export class LandingPage {
     await this.loginButton.click();
   }
 
-  // logged in with valid credential on landing page
+  // on landing page, log in with valid credentials
   async loggedIn() {
     await this.page.goto(landingPageUrl);
     await this.login(username, password);
