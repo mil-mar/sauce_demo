@@ -40,6 +40,8 @@ test("invalid username", async ({ page }) => {
   await poManager.landingPage.usernameInput.fill("incorrect");
   await poManager.landingPage.passwordInput.fill(password);
   await poManager.landingPage.loginButton.click();
+
+  // verify error msg is displayed
   const errorMessage = await poManager.landingPage.errorMessage;
   expect(await errorMessage.textContent()).toContain(
     "Epic sadface: Username and password do not match any user in this service",
@@ -55,8 +57,9 @@ test("invalid password", async ({ page }) => {
   await poManager.landingPage.usernameInput.fill(username);
   await poManager.landingPage.passwordInput.fill("invalidpassword");
   await poManager.landingPage.loginButton.click();
-  const errorMessage = await poManager.landingPage.errorMessage;
 
+  // verify error msg is displayed
+  const errorMessage = await poManager.landingPage.errorMessage;
   expect(await errorMessage.textContent()).toContain(
     "Epic sadface: Username and password do not match any user in this service",
   );
@@ -72,7 +75,7 @@ test("add 1 item to cart", async ({ page }) => {
   await poManager.landingPage.login(username, password);
 
   // identify our item and add it to cart
-  const our_item = poManager.inventoryPage.inventoryItems.filter({
+  const our_item = await poManager.inventoryPage.inventoryItems.filter({
     hasText: "Sauce Labs Fleece Jacket",
   });
   await our_item.getByRole("button", { name: "Add to cart" }).click();
@@ -80,4 +83,34 @@ test("add 1 item to cart", async ({ page }) => {
   // verify that item was added to cart and button for the item changed to 'Remove'
   await expect(poManager.inventoryPage.cartButton).toHaveText("1");
   await expect(our_item.getByRole("button", { name: "Remove" })).toBeVisible();
+});
+
+test("complete checkout process", async ({ page }) => {
+  const poManager = new POManager(page);
+  const username = process.env.STANDARD_USERNAME;
+  const password = process.env.STANDARD_PASSWORD;
+
+  // go to landing page and log in
+  await page.goto(url_sauce_demo);
+  await poManager.landingPage.login(username, password);
+
+  // add 1 item to cart
+  await poManager.inventoryPage.searchProductAddToCart("Sauce Labs Backpack");
+
+  // go to cart and complete checkout process
+  await poManager.inventoryPage.cartButton.click();
+  await poManager.cartPage.checkoutButton.click();
+  await poManager.checkoutStep1.firstNameInput.fill("John");
+  await poManager.checkoutStep1.lastNameInput.fill("Doe");
+  await poManager.checkoutStep1.zipInput.fill("12345");
+  await poManager.checkoutStep1.continueButton.click();
+  await poManager.checkoutStep2.finishButton.click();
+
+  // verify order was succesful
+  await expect(poManager.checkoutComplete.titleHeader).toHaveText(
+    "Checkout: Complete!",
+  );
+  await expect(poManager.checkoutComplete.orderCompleteHeader).toHaveText(
+    "Thank you for your order!",
+  );
 });
