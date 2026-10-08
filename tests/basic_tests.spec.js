@@ -1,6 +1,7 @@
 // @ts-check
 import { test, expect } from "@playwright/test";
 import { POManager } from "../pages/PO_manager";
+import { completeCheckout } from "../helpers/helpers";
 require("dotenv").config();
 
 const url_sauce_demo = "https://www.saucedemo.com";
@@ -101,6 +102,28 @@ test("complete checkout process", async ({ page }) => {
   await poManager.checkoutStep1.zipInput.fill("12345");
   await poManager.checkoutStep1.continueButton.click();
   await poManager.checkoutStep2.finishButton.click();
+
+  // verify order was succesful
+  await expect(poManager.checkoutComplete.titleHeader).toHaveText(
+    "Checkout: Complete!",
+  );
+  await expect(poManager.checkoutComplete.orderCompleteHeader).toHaveText(
+    "Thank you for your order!",
+  );
+});
+
+test("complete checkout process - using helper function", async ({ page }) => {
+  const poManager = new POManager(page);
+
+  // go to landing page and log in
+  await page.goto(url_sauce_demo);
+  await poManager.landingPage.login(username, password);
+
+  // add 1 item to cart
+  await poManager.inventoryPage.searchProductAddToCart("Sauce Labs Backpack");
+
+  // go to cart and complete checkout process - using helper function
+  await completeCheckout(page);
 
   // verify order was succesful
   await expect(poManager.checkoutComplete.titleHeader).toHaveText(
